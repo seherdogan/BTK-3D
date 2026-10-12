@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Milano Daire Turu</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <div id="loader">
+      <div class="loader-box">
+        <h1>Milano Daire Turu</h1>
+        <div class="bar"><span id="loader-bar"></span></div>
+        <p id="loader-text">Model yükleniyor… 0%</p>
+      </div>
+    </div>
+
+    <header class="brand">
+      <h1 lang="it">Trilocale · Milano</h1>
+      <p id="room-subtitle">Kaydırarak daireyi gezin</p>
+    </header>
+
+    <nav id="room-list" aria-label="Odalar"></nav>
+
+    <div id="hotspots"></div>
+
+    <aside id="info-card" hidden>
+      <span class="eyebrow" id="info-room"></span>
+      <h2 id="info-title"></h2>
+      <p id="info-desc"></p>
+      <p class="hint">Sürükleyerek etrafında döndürün, tekerlekle yakınlaşın.</p>
+      <button id="info-back" type="button">← Tura dön (Esc)</button>
+    </aside>
+
+    <div id="scroll-hint">
+      <span class="mouse"></span>
+      <span>Kaydırın · eşyalara tıklayın</span>
+    </div>
+
+    <div id="progress"><span id="progress-bar"></span></div>
+
+    <footer class="credit">
+      Model: <a href="https://sketchfab.com/3d-models/trilocale-via-boncompagni-milano-dd261cf6c2e647cab915f015230bb15e" target="_blank" rel="noopener">"Trilocale Via Boncompagni Milano"</a>
+      — <a href="https://sketchfab.com/FabioSiccardi" target="_blank" rel="noopener">Fabio Siccardi</a>, CC-BY-4.0
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

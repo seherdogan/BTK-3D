@@ -1,0 +1,257 @@
+:root {
+  --bg: #12110f;
+  --panel: rgba(22, 20, 18, 0.62);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text: #f3efe8;
+  --muted: #b9b1a5;
+  --accent: #e2b26f;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  overscroll-behavior: none;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.panel-glass {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+}
+
+/* Loader */
+#loader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 40%, #2a2520, var(--bg));
+  z-index: 50;
+  transition: opacity 0.8s ease;
+}
+#loader.done { opacity: 0; pointer-events: none; }
+.loader-box { width: min(360px, 80vw); text-align: center; }
+.loader-box h1 { font-weight: 300; letter-spacing: 0.08em; margin: 0 0 24px; }
+.bar { height: 3px; background: rgba(255, 255, 255, 0.12); border-radius: 3px; overflow: hidden; }
+.bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
+#loader-text { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+/* Header */
+.brand {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 10;
+  pointer-events: none;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.brand h1 { margin: 0; font-size: 22px; font-weight: 300; letter-spacing: 0.12em; text-transform: uppercase; }
+.brand p { margin: 4px 0 0; color: var(--accent); font-size: 15px; transition: opacity 0.3s; }
+
+/* Room list */
+#room-list {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+}
+#room-list button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  color: var(--muted);
+  transition: background 0.2s, color 0.2s;
+}
+#room-list button::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+#room-list button:hover { background: rgba(255, 255, 255, 0.07); color: var(--text); }
+#room-list button.active { color: var(--accent); background: rgba(226, 178, 111, 0.12); }
+#room-list button.active::before { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+
+/* Hotspots */
+#hotspots { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+.hotspot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  transition: opacity 0.3s;
+  will-change: transform;
+}
+.hotspot .dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(226, 178, 111, 0.9);
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 0 rgba(226, 178, 111, 0.7);
+  animation: pulse 2s infinite;
+  flex: none;
+}
+.hotspot .label {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.hotspot:hover .label, .hotspot:focus-visible .label { opacity: 1; transform: none; }
+.hotspot.hidden { opacity: 0; pointer-events: none; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(226, 178, 111, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(226, 178, 111, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(226, 178, 111, 0); }
+}
+
+/* Info card */
+#info-card {
+  position: fixed;
+  left: 24px;
+  bottom: 70px;
+  width: min(360px, calc(100vw - 32px));
+  z-index: 20;
+  padding: 20px 22px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+  animation: rise 0.35s ease;
+}
+#info-card[hidden] { display: none; }
+#info-card .eyebrow { color: var(--accent); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+#info-card h2 { margin: 6px 0 8px; font-weight: 400; }
+#info-card p { margin: 0 0 10px; color: var(--muted); line-height: 1.5; font-size: 14px; }
+#info-card .hint { font-size: 12px; opacity: 0.8; }
+#info-back {
+  all: unset;
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 8px 14px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #1b1712;
+  font-weight: 600;
+  font-size: 14px;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+
+/* Scroll hint + progress */
+#scroll-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+#scroll-hint.hide { opacity: 0; }
+.mouse {
+  width: 18px;
+  height: 28px;
+  border: 2px solid var(--muted);
+  border-radius: 10px;
+  position: relative;
+}
+.mouse::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 2px;
+  height: 6px;
+  margin-left: -1px;
+  background: var(--muted);
+  animation: wheel 1.6s infinite;
+}
+@keyframes wheel { to { transform: translateY(8px); opacity: 0; } }
+
+#progress { position: fixed; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255, 255, 255, 0.08); z-index: 10; }
+#progress-bar { display: block; height: 100%; width: 0; background: var(--accent); }
+
+.credit {
+  position: fixed;
+  right: 20px;
+  bottom: 12px;
+  font-size: 11px;
+  color: var(--muted);
+  z-index: 10;
+  opacity: 0.75;
+}
+.credit a { color: inherit; }
+
+@media (max-width: 720px) {
+  #room-list {
+    top: auto;
+    bottom: 40px;
+    right: 16px;
+    left: 16px;
+    transform: none;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  #room-list button { white-space: nowrap; }
+  #info-card { left: 16px; bottom: 110px; }
+  #scroll-hint { display: none; }
+  .credit { left: 16px; right: 16px; bottom: 8px; }
+  .brand { left: 16px; top: 16px; }
+}
